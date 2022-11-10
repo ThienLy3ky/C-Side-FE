@@ -36,15 +36,7 @@ function TabPanel(props) {
 export default function Login() {
   const [value, setValue] = React.useState(0);
 
-  const [values, setValues] = React.useState({
-    password: "",
-    showPassword: false,
-  });
   const [isShowPassword, setIsShowpPassword] = useState(true);
-
-  const handleChangeValue = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
 
   const handleClickShowPassword = () => {
     setIsShowpPassword(!isShowPassword);
@@ -63,13 +55,10 @@ export default function Login() {
     borderRadius: "50%",
     marginRight: "10px !important",
   }));
-  const LoginHeader = styled(Paper)(({ theme }) => ({
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%,-50%)",
-    width: "375px",
-    backgroundColor: "white",
+  const LoginHeader = styled(Box)(({ theme }) => ({
+    textAlign: "center",
+    padding: "20px 20px 5px",
+    fontWeight: "bold",
   }));
   return (
     <Paper
@@ -83,15 +72,9 @@ export default function Login() {
       }}
       elevation={4}
     >
-      <Box
-        sx={{
-          textAlign: "center",
-          padding: "20px 20px 5px",
-          fontWeight: "bold",
-        }}
-      >
+      <LoginHeader>
         <Typography variant="h4">Login</Typography>
-      </Box>
+      </LoginHeader>
       <Tabs
         value={value}
         textColor="primary"
