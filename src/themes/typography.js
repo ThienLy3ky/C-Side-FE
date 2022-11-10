@@ -1,6 +1,6 @@
-const Typography = (fontFamily) => ({
-  fontFamily,
-  fontSize: 12,
+const Typography = () => ({
+  fontFamily: `'Lato', sans-serif`,
+  fontSize: 14,
   h1: {
     fontSize: 64,
     fontWeight: "bold",
