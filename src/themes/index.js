@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "./typography";
 import Palette from "./palette";
 export default function ThemeCustomization({ children }) {
-  const themeTypography = Typography(["Lato", "sans-serif"].join(","));
+  const themeTypography = Typography();
   const themePalette = Palette();
   const themeOptions = useMemo(
     () => ({
