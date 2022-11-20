@@ -1,14 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import App from "./App";
+import { AppProvider } from "./context/app.context";
+import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import ThemeCustomization from "./themes";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeCustomization>
-    <App />
+    <AppProvider>
+      <App />
+    </AppProvider>
   </ThemeCustomization>
 );
 

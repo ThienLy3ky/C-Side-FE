@@ -4,6 +4,7 @@ import {
   faEyeSlash,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
   Button,
@@ -13,13 +14,24 @@ import {
   Paper,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
-import { FaIcon } from "../../components";
+import { FormProvider, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import { FaIcon, FormInput } from "../../components";
+import { useAuth } from "../../hook";
+import { authAPI } from "../../services/auth.api";
+const shema = yup.object({
+  user_name: yup
+    .string()
+    .email("Email must be a valid email")
+    .required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -34,12 +46,37 @@ function TabPanel(props) {
 }
 
 export default function Login() {
-  const [value, setValue] = React.useState(0);
-
+  const [value, setValue] = useState(0);
+  const { setIsAuthenticate } = useAuth();
   const [isShowPassword, setIsShowpPassword] = useState(true);
+  const navigate = useNavigate();
+  const method = useForm({
+    defaultValues: {
+      user_name: "",
+      password: "",
+    },
+    resolver: yupResolver(shema),
+  });
+  const {
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = method;
 
   const handleClickShowPassword = () => {
     setIsShowpPassword(!isShowPassword);
+  };
+
+  const onHandleSubmit = async (data) => {
+    try {
+      const res = await authAPI.login(data);
+      setIsAuthenticate(res.data?.access_token);
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.log("error", error);
+      if (error.response.status_code === 9001) {
+      }
+    }
   };
   const makeStyleIcon = {
     textTransform: "capitalize",
@@ -109,79 +146,88 @@ export default function Login() {
         />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Box>
-          <TextField label="Email address" variant="outlined" fullWidth />
-          <TextField
-            fullWidth
-            type={isShowPassword ? "password" : "text"}
-            sx={{ width: "100%", marginTop: "15px" }}
-            label="Password"
-            variant="outlined"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton size="small" onClick={handleClickShowPassword}>
-                    <FaIcon
-                      icon={isShowPassword ? faEyeSlash : faEye}
-                      style={{
-                        backgroundColor: "#d8dae4",
-                        padding: "7px",
-                        borderRadius: "50%",
-                      }}
-                    />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Link
-            variant="pa200"
-            underline="none"
-            sx={{ display: "flex", justifyContent: "flex-end", mt: "25px" }}
-          >
-            Forgot password?
-          </Link>
-          <Stack direction="column" alignItems="center" sx={{ mt: "25px" }}>
-            <Box>
-              <Typography variant="pa200">
-                By signing in,I agree to Bindle
-              </Typography>{" "}
-              <Link variant="pa200" underline="none">
-                Terms of Use
-              </Link>
-            </Box>
-            <Box>
-              <Typography variant="pa200">and</Typography>{" "}
-              <Link variant="pa200" underline="none">
-                Privacy Policy
-              </Link>
-            </Box>
-          </Stack>
-          <Button
-            sx={{
-              textTransform: "capitalize",
-              padding: "15px 0",
-              fontSize: "16px",
-              mt: "30px",
-            }}
-            variant="contained"
-            fullWidth
-          >
-            Sign in
-          </Button>
-          <Stack
-            direction="column"
-            alignItems="center"
-            sx={{ padding: "25px" }}
-          >
-            <Box>
-              <Typography variant="pa200">No account yet?</Typography>{" "}
-              <Link variant="pa200" underline="none">
-                Create account
-              </Link>
-            </Box>
-          </Stack>
-        </Box>
+        <FormProvider {...method}>
+          <Box component="form" onSubmit={handleSubmit(onHandleSubmit)}>
+            <FormInput
+              label="Email address"
+              variant="outlined"
+              name="user_name"
+              fullWidth
+            />
+            <FormInput
+              fullWidth
+              type={isShowPassword ? "password" : "text"}
+              sx={{ width: "100%", marginTop: "15px" }}
+              label="Password"
+              variant="outlined"
+              name="password"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton size="small" onClick={handleClickShowPassword}>
+                      <FaIcon
+                        icon={isShowPassword ? faEyeSlash : faEye}
+                        style={{
+                          backgroundColor: "#d8dae4",
+                          padding: "7px",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Link
+              variant="pa200"
+              underline="none"
+              sx={{ display: "flex", justifyContent: "flex-end", mt: "25px" }}
+            >
+              Forgot password?
+            </Link>
+            <Stack direction="column" alignItems="center" sx={{ mt: "25px" }}>
+              <Box>
+                <Typography variant="pa200">
+                  By signing in,I agree to Bindle
+                </Typography>{" "}
+                <Link variant="pa200" underline="none">
+                  Terms of Use
+                </Link>
+              </Box>
+              <Box>
+                <Typography variant="pa200">and</Typography>{" "}
+                <Link variant="pa200" underline="none">
+                  Privacy Policy
+                </Link>
+              </Box>
+            </Stack>
+            <Button
+              sx={{
+                textTransform: "capitalize",
+                padding: "15px 0",
+                fontSize: "16px",
+                mt: "30px",
+              }}
+              variant="contained"
+              fullWidth
+              type="submit"
+            >
+              Sign in
+            </Button>
+            <Stack
+              direction="column"
+              alignItems="center"
+              sx={{ padding: "25px" }}
+            >
+              <Box>
+                <Typography variant="pa200">No account yet?</Typography>{" "}
+                <Link variant="pa200" underline="none">
+                  Create account
+                </Link>
+              </Box>
+            </Stack>
+          </Box>
+        </FormProvider>
       </TabPanel>
       <TabPanel value={value} index={1}>
         {/* Item Two */}

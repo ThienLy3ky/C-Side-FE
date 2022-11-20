@@ -3,7 +3,12 @@
 html,
 body,
 #root,
-.app {
+.app,
+* {
   font-family: "Lato", sans-serif;
   margin: 0;
+  padding: 0;
+}
+p {
+  color: white;
 }

@@ -7,12 +7,16 @@ const Palette = () => ({
   },
   primary: {
     main: "#3968d0",
+    100: "#3A6AD4",
   },
   success: {
     main: "#34a59f",
+    100: "#34A59F",
   },
   warning: {
     main: "#ff6646",
+    100: "#FFB020",
+    200: "#FF6647",
   },
   grey: {
     50: "#fafbfe",
@@ -26,6 +30,10 @@ const Palette = () => ({
     800: "#474d66",
     900: "#101840",
     A100: "#f9fbfd",
+    A200: "#696F8C",
+    A300: "#304659",
+    A400: "#C1C4D6",
+    A500: "#F9FAFC",
   },
 });
 export default Palette;
