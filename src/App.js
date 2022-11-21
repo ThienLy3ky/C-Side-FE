@@ -5,13 +5,14 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Login } from "./pages";
+import { Login, Homepage } from "./pages";
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to={"/login"} />} />
+        <Route path="/" element={<Navigate to={"/homepage"} />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/homepage" element={<Homepage />} />
       </Routes>
     </Router>
   );
