@@ -4,11 +4,14 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import ThemeCustomization from "./themes";
+import { AuthProvider } from './contexts/JWTContext';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeCustomization>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </ThemeCustomization>
 );
 

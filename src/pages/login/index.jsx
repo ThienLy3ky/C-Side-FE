@@ -19,7 +19,10 @@ import {
 import { styled } from "@mui/material/styles";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
+import validator from "validator";
 import { FaIcon } from "../../components";
+import { IS_VALID_EMAIL, IS_VALID_PHONE_NUMBER } from "../../config/errorMessage";
+import useAuth from "../../hooks/useAuth";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -34,13 +37,52 @@ function TabPanel(props) {
 }
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState("");
+  const [password, setPassword] = useState("");
   const [value, setValue] = React.useState(0);
-
   const [isShowPassword, setIsShowpPassword] = useState(true);
+
+  const { login } = useAuth();
+
+  const handleLogin = async () => {
+    await login(email, password);
+  };
+
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+
+    if (!validator.isEmail(email)) {
+      setEmailError(IS_VALID_EMAIL);
+    } else {
+      setEmailError("");
+    }
+
+    setEmail(e.target.value);
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    const phoneNumber = e.target.value;
+
+    if (!validator.isMobilePhone(phoneNumber, "vi-VN")) {
+      setPhoneNumberError(IS_VALID_PHONE_NUMBER);
+    } else {
+      setPhoneNumberError("");
+    }
+
+    setPhoneNumber(phoneNumber);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
   const handleClickShowPassword = () => {
     setIsShowpPassword(!isShowPassword);
   };
+
   const makeStyleIcon = {
     textTransform: "capitalize",
     width: "50%",
@@ -60,6 +102,7 @@ export default function Login() {
     padding: "20px 20px 5px",
     fontWeight: "bold",
   }));
+
   return (
     <Paper
       sx={{
@@ -75,6 +118,7 @@ export default function Login() {
       <LoginHeader>
         <Typography variant="h4">Login</Typography>
       </LoginHeader>
+
       <Tabs
         value={value}
         textColor="primary"
@@ -108,12 +152,26 @@ export default function Login() {
           iconPosition="start"
         />
       </Tabs>
+
       <TabPanel value={value} index={0}>
         <Box>
-          <TextField label="Email address" variant="outlined" fullWidth />
+          <TextField
+            label="Email address"
+            variant="outlined"
+            name="email"
+            value={email}
+            onChange={handleEmailChange}
+            fullWidth
+          />
+          <Typography variant="pa200" color="#e60505">
+            {emailError}
+          </Typography>
           <TextField
             fullWidth
+            name="password"
             type={isShowPassword ? "password" : "text"}
+            value={password}
+            onChange={handlePasswordChange}
             sx={{ width: "100%", marginTop: "15px" }}
             label="Password"
             variant="outlined"
@@ -166,6 +224,7 @@ export default function Login() {
             }}
             variant="contained"
             fullWidth
+            onClick={handleLogin}
           >
             Sign in
           </Button>
@@ -183,9 +242,96 @@ export default function Login() {
           </Stack>
         </Box>
       </TabPanel>
+
       <TabPanel value={value} index={1}>
         {/* Item Two */}
-        <Box sx={{ minHeight: "410px" }}></Box>
+        <Box>
+          <TextField
+            label="Phone Number"
+            variant="outlined"
+            name="phoneNumber"
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+            fullWidth
+          />
+          <Typography variant="pa200" color="#e60505">
+            {phoneNumberError}
+          </Typography>
+          <TextField
+            fullWidth
+            name="password"
+            type={isShowPassword ? "password" : "text"}
+            value={password}
+            onChange={handlePasswordChange}
+            sx={{ width: "100%", marginTop: "15px" }}
+            label="Password"
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton size="small" onClick={handleClickShowPassword}>
+                    <FaIcon
+                      icon={isShowPassword ? faEyeSlash : faEye}
+                      style={{
+                        backgroundColor: "#d8dae4",
+                        padding: "7px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Link
+            variant="pa200"
+            underline="none"
+            sx={{ display: "flex", justifyContent: "flex-end", mt: "25px" }}
+          >
+            Forgot password?
+          </Link>
+          <Stack direction="column" alignItems="center" sx={{ mt: "25px" }}>
+            <Box>
+              <Typography variant="pa200">
+                By signing in,I agree to Bindle
+              </Typography>{" "}
+              <Link variant="pa200" underline="none">
+                Terms of Use
+              </Link>
+            </Box>
+            <Box>
+              <Typography variant="pa200">and</Typography>{" "}
+              <Link variant="pa200" underline="none">
+                Privacy Policy
+              </Link>
+            </Box>
+          </Stack>
+          <Button
+            sx={{
+              textTransform: "capitalize",
+              padding: "15px 0",
+              fontSize: "16px",
+              mt: "30px",
+            }}
+            variant="contained"
+            fullWidth
+            onClick={handleLogin}
+          >
+            Sign in
+          </Button>
+          <Stack
+            direction="column"
+            alignItems="center"
+            sx={{ padding: "25px" }}
+          >
+            <Box>
+              <Typography variant="pa200">No account yet?</Typography>{" "}
+              <Link variant="pa200" underline="none">
+                Create account
+              </Link>
+            </Box>
+          </Stack>
+        </Box>
       </TabPanel>
     </Paper>
   );
