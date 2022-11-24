@@ -20,6 +20,7 @@ import { styled } from "@mui/material/styles";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { FaIcon } from "../../components";
+import useAuth from "../../hooks/useAuth";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -33,14 +34,38 @@ function TabPanel(props) {
   );
 }
 
-export default function Login() {
-  const [value, setValue] = React.useState(0);
+const isValidEmail = (email) => {
+  return (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email))
+}
 
+export default function Login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('');
+  const [value, setValue] = React.useState(0);
   const [isShowPassword, setIsShowpPassword] = useState(true);
 
+  const { login } = useAuth();
+
+  const handleLogin = async () => {
+    try {
+      await login();
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  }
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value)
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+  };
+  
   const handleClickShowPassword = () => {
     setIsShowpPassword(!isShowPassword);
   };
+
   const makeStyleIcon = {
     textTransform: "capitalize",
     width: "50%",
@@ -60,6 +85,7 @@ export default function Login() {
     padding: "20px 20px 5px",
     fontWeight: "bold",
   }));
+
   return (
     <Paper
       sx={{
@@ -110,10 +136,21 @@ export default function Login() {
       </Tabs>
       <TabPanel value={value} index={0}>
         <Box>
-          <TextField label="Email address" variant="outlined" fullWidth />
+          <TextField 
+            label="Email address" 
+            variant="outlined"
+            name="email"
+            error={isValidEmail(email)}
+            value={email}
+            onChange={handleEmailChange}
+            fullWidth
+          />
           <TextField
             fullWidth
+            name="password"
             type={isShowPassword ? "password" : "text"}
+            value={password}
+            onChange={handlePasswordChange}
             sx={{ width: "100%", marginTop: "15px" }}
             label="Password"
             variant="outlined"
@@ -166,6 +203,7 @@ export default function Login() {
             }}
             variant="contained"
             fullWidth
+            onClick={handleLogin}
           >
             Sign in
           </Button>

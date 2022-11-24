@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { isValidToken, setSession } from '../utils/helpers/jwt.helpers';
-import BE_SERVER from '../config/constant';
+import { BE_SERVER } from '../config/constant';
 
 const initialState = {
     isAuthenticated: false,
@@ -84,8 +84,12 @@ function AuthProvider({ children }) {
         initialize()
     }, [])
 
-    const login = async (userName, password) => {
-        const response = await axios.post(`${BE_SERVER}auth/login`);
+    const login = async (email, password) => {
+        const response = await axios.post(`${BE_SERVER}auth/login`, {
+            email,
+            password,
+        });
+        
         const { accessToken } = response.data;
 
         setSession(accessToken);
