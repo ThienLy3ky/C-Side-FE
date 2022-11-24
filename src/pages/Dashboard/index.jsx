@@ -2,6 +2,7 @@ import {
   faBars,
   faGlobe,
   faArrowRight,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -24,6 +25,7 @@ import {
   Destination,
   Logo,
   RentalArea,
+  FeaturedHome
 } from "../../assets/images";
 
 export default function Dashboard() {
@@ -147,6 +149,55 @@ export default function Dashboard() {
       borderRadius: "20px",
     },
   }));
+  const FeatureHomes = styled(Box)(({ theme }) => ({
+    padding: "39px",
+    borderRadius: "30px",
+    marginBottom: "62px",
+  }));
+  const CardFeaturedHomesArea = styled(Box)(({ theme }) => ({
+    maxWidth: "280px",
+    maxheight: "210px",
+  }));
+  const TestimonialsContainer = styled(Box)(({ theme }) => ({
+    maxWidth: "1281px",
+  }));
+  const TestimonialsItem = styled(Box)(({ theme }) => ({
+    gridTemplateColumns: "522px 325px 394px",
+    gridTemplateRows: "522px 325px 394px",
+    gridGap: "20px",
+    "&:first-child": {
+    },
+    "&:nth-child(2)": {
+    },
+    "&:nth-child(3)": {
+    },
+    "&:last-child": {
+    },
+    "& img": {
+      objectFit: "cover",
+      borderRadius: "20px",
+    },
+  }));
+  const Newsletter = styled(Box)(({ theme }) => ({
+    position: "relative",
+    padding: "35px 73px 255px",
+    width: "1281px",
+    height: "272px",
+    "&:before": {
+      position: "absolute",
+      content: "''",
+      backgroundImage: `url(${DashBoardBg})`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      backgroundSize: "cover",
+      width: "100%",
+      height: "100%",
+      top: 0,
+      left: 0,
+      zIndex: -1,
+    },
+  }));
+  
   return (
     <DashboardContainer>
       <DashboardOverview>
@@ -380,6 +431,154 @@ export default function Dashboard() {
             </DestinationItem>
           </Destinations>
         </PopularDestinations>
+
+        <FeatureHomes>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "8px"
+            }}
+          >
+            <Typography variant="h3" color="grey.A300">
+              Featured homes recommended for you
+            </Typography>
+            <Button
+              variant="outlined"
+              endIcon={<FontAwesomeIcon icon={faArrowRight} />}
+            >
+              Explore
+            </Button>
+          </Box>
+          <Typography
+            variant="pa400"
+            color="grey.A200"
+            sx={{ marginBottom: "54px" }}
+            component="p"
+          >
+            Because you viewed vacation homes in this city
+          </Typography>
+          <WidgetRentalArea>
+            {Array(4)
+              .fill()
+              .map((_, idx) => {
+                return (
+                  <CardFeaturedHomesArea key={idx}>
+                    <img
+                      src={FeaturedHome}
+                      sx={{ width: "280px", height: "210px" }}
+                    />
+                    <Box>
+                      <Typography variant="h5" color="grey.A300">
+                        Luxury 3 Bedroom Apartment at Epicentrum
+                      </Typography>
+                      <Typography variant="pa400" color="grey.A200">
+                        Entire house | Florida
+                      </Typography>
+                    </Box>
+                  </CardFeaturedHomesArea>
+                );
+              })}
+          </WidgetRentalArea>
+        </FeatureHomes>
+
+        <TestimonialsContainer>
+          <Typography
+            variant="h3"
+            color="grey.A300"
+            sx={{ marginBottom: "8px" }}
+          >
+            Testimonials & Gallery
+          </Typography>
+        </TestimonialsContainer>
+
+        <Newsletter>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              justifyItems: "center",
+              alignItems: "center",
+            }}
+          >
+            <Box>
+              <Typography
+                width="60%"
+                variant="h2"
+                color="grey.A300"
+                sx={{ mb: 2 }}
+              >
+                Get the best discounts for your family vacation.
+              </Typography>
+              <Box
+                sx={{
+                  width: "60%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  justifyItems: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box>
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    style={{
+                      color: "grey.A300",
+                    }}
+                  />
+                  <Typography
+                    variant="pa400"
+                    color="grey.A300"
+                    sx={{ mb: 2 }}
+                  >
+                    Best discounts ever
+                  </Typography>
+                </Box>
+                <Box>
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    style={{
+                      color: "grey.A300",
+                    }}
+                  />
+                  <Typography
+                    variant="pa400"
+                    color="grey.A300"
+                    sx={{ mb: 2 }}
+                  >
+                    Free offers
+                  </Typography>
+                </Box>
+                <Box>
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    style={{
+                      color: "grey.A300",
+                    }}
+                  />
+                  <Typography
+                    variant="pa400"
+                    color="grey.A300"
+                    sx={{ mb: 2 }}
+                  >
+                    Fast & secure payments
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+            
+            <Button
+              variant="contained"
+              sx={{
+                padding: "24px 36px",
+                maxHeight: "72px",
+                borderRadius: "16px",
+              }}
+            >
+              Sign Up Now
+            </Button>
+          </Box>
+        </Newsletter>
       </Box>
     </DashboardContainer>
   );
