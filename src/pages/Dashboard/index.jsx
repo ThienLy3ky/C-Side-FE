@@ -180,10 +180,12 @@ export default function Dashboard() {
   }));
   const Newsletter = styled(Box)(({ theme }) => ({
     position: "relative",
+    margin: "30px",
     padding: "35px 73px 255px",
     width: "1281px",
     height: "272px",
     "&:before": {
+      borderRadius: "20px",
       position: "absolute",
       content: "''",
       backgroundImage: `url(${DashBoardBg})`,
@@ -196,6 +198,14 @@ export default function Dashboard() {
       left: 0,
       zIndex: -1,
     },
+  }));
+
+  const Footer = styled(Box)(({ theme }) => ({
+    backgroundColor: theme.palette.grey.A300,
+    position: "relative",
+    padding: "35px",
+    width: "1440px",
+    height: "320px",
   }));
   
   return (
@@ -579,6 +589,28 @@ export default function Dashboard() {
             </Button>
           </Box>
         </Newsletter>
+        <Footer>
+          <Box
+            sx={{
+              width: "40%",
+            }}>
+            <Typography
+              variant="h4"
+              color="white"
+              sx={{ mb: 2 }}
+            >
+              Explore the world with Bindle!
+            </Typography>
+            <Typography
+              variant="pa300"
+              color="white"
+              sx={{ mb: 2 }}
+            >
+              We offer tailored services for all your traveling needs. Our host are wonderful, ready to accommodate your stay as you enjoy your vacation without worries.
+            </Typography>
+          </Box>
+          
+        </Footer>
       </Box>
     </DashboardContainer>
   );
