@@ -7,7 +7,7 @@ import {
 import { authAPI } from "./auth.api";
 let accessToken = getAccessTokenFromLS();
 let refreshToken = null;
-console.log("process.env.REACT_APP_BASE_URL", process.env.REACT_APP_BASE_URL);
+
 export const http = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   timeout: 10000,
@@ -51,8 +51,8 @@ http.interceptors.response.use(
       refreshToken = refreshToken
         ? refreshToken
         : authAPI.refreshToken().finally(() => {
-            refreshToken = null;
-          });
+          refreshToken = null;
+        });
       return refreshToken
         .then((access_token) => {
           error.response.config.Authorization = access_token;

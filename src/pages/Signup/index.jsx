@@ -27,12 +27,15 @@ import * as yup from "yup";
 import { FaIcon, FormInput } from "../../components";
 import { useAuth } from "../../hook";
 import { authAPI } from "../../services/auth.api";
+
 const schema = yup.object({
     email: yup
         .string()
         .email("Email must be a valid email")
         .required("Email is required"),
     password: yup.string().required("Password is required"),
+    firstName: yup.string().required("First name is required"),
+    lastName: yup.string().required("Last name is required"),
 });
 
 function TabPanel(props) {
@@ -47,7 +50,7 @@ function TabPanel(props) {
     );
 }
 
-export default function Login() {
+export default function Signup() {
     const [value, setValue] = useState(0);
     const { isAuthenticated, setIsAuthenticate } = useAuth();
     const [isShowPassword, setIsShowpPassword] = useState(true);
@@ -56,6 +59,8 @@ export default function Login() {
         defaultValues: {
             email: "",
             password: "",
+            firstName: "",
+            lastName: "",
         },
         resolver: yupResolver(schema),
     });
@@ -70,8 +75,12 @@ export default function Login() {
     };
 
     const onHandleSubmit = async (data) => {
+        console.log(data);
         try {
-            const res = await authAPI.login(data);
+            const res = await authAPI.register({
+                ...data,
+                name: `${data.firstName} ${data.lastName}`,
+            });
             if (res.status === 201) {
                 setIsAuthenticate(Boolean(res.data?.access_token));
                 setAccessTokenToLS(res.data?.access_token);
@@ -83,6 +92,7 @@ export default function Login() {
             }
         }
     };
+
     const makeStyleIcon = {
         textTransform: "capitalize",
         width: "50%",
@@ -91,12 +101,14 @@ export default function Login() {
         display: "flex",
         alignItems: "center",
     };
+
     const IconCircle = styled(Stack)(({ theme }) => ({
         backgroundColor: theme.palette.grey[100],
         padding: "10px",
         borderRadius: "50%",
         marginRight: "10px !important",
     }));
+
     const LoginHeader = styled(Box)(({ theme }) => ({
         textAlign: "center",
         padding: "20px 20px 5px",
@@ -120,7 +132,7 @@ export default function Login() {
             elevation={4}
         >
             <LoginHeader>
-                <Typography variant="h4">Login</Typography>
+                <Typography variant="h4">Sign up</Typography>
             </LoginHeader>
             <Tabs
                 value={value}
@@ -198,6 +210,26 @@ export default function Login() {
                                 ),
                             }}
                         />
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                            }}
+                        >
+                            <FormInput
+                                sx={{ width: "48%", marginTop: "15px" }}
+                                label="First name"
+                                variant="outlined"
+                                name="firstName"
+                            />
+                            <FormInput
+                                sx={{ width: "48%", marginTop: "15px" }}
+                                label="Last name"
+                                variant="outlined"
+                                name="lastName"
+                            />
+                        </Box>
                         <Link
                             variant="pa200"
                             underline="none"
@@ -249,14 +281,14 @@ export default function Login() {
                         >
                             <Box>
                                 <Typography variant="pa200">
-                                    No account yet?
+                                    Already have an account?
                                 </Typography>{" "}
                                 <Link
                                     variant="pa200"
                                     underline="none"
-                                    href="/signup"
+                                    href="/login"
                                 >
-                                    Create account
+                                    Go to login
                                 </Link>
                             </Box>
                         </Stack>
