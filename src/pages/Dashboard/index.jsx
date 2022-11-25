@@ -1,8 +1,9 @@
 import {
-  faBars,
-  faGlobe,
   faArrowRight,
+  faBars,
   faCheck,
+  faGlobe,
+  faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,23 +11,24 @@ import {
   Box,
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
   Typography,
-  Grid,
 } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
 import { styled } from "@mui/material/styles";
+import { Stack } from "@mui/system";
 import React from "react";
 import {
   City,
   DashBoardBg,
   Destination,
+  FeaturedHome,
   Logo,
   RentalArea,
-  FeaturedHome
 } from "../../assets/images";
+import { Testimonial } from "./Testimonial";
 
 export default function Dashboard() {
   const [age, setAge] = React.useState("");
@@ -159,20 +161,34 @@ export default function Dashboard() {
     maxheight: "210px",
   }));
   const TestimonialsContainer = styled(Box)(({ theme }) => ({
-    maxWidth: "1281px",
+    width: "100%",
+    height: "272px",
+    padding: "35px 73px 255px",
+    position: "relative",
+    marginBottom: "30px",
+    "&:before": {
+      position: "absolute",
+      content: "''",
+      backgroundImage: `url(${DashBoardBg})`,
+      borderRadius: "10px",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      backgroundSize: "cover",
+      width: "100%",
+      height: "100%",
+      top: 0,
+      left: 0,
+      zIndex: -1,
+    },
   }));
   const TestimonialsItem = styled(Box)(({ theme }) => ({
     gridTemplateColumns: "522px 325px 394px",
     gridTemplateRows: "522px 325px 394px",
     gridGap: "20px",
-    "&:first-child": {
-    },
-    "&:nth-child(2)": {
-    },
-    "&:nth-child(3)": {
-    },
-    "&:last-child": {
-    },
+    "&:first-child": {},
+    "&:nth-child(2)": {},
+    "&:nth-child(3)": {},
+    "&:last-child": {},
     "& img": {
       objectFit: "cover",
       borderRadius: "20px",
@@ -197,7 +213,7 @@ export default function Dashboard() {
       zIndex: -1,
     },
   }));
-  
+
   return (
     <DashboardContainer>
       <DashboardOverview>
@@ -437,7 +453,7 @@ export default function Dashboard() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              marginBottom: "8px"
+              marginBottom: "8px",
             }}
           >
             <Typography variant="h3" color="grey.A300">
@@ -466,14 +482,28 @@ export default function Dashboard() {
                   <CardFeaturedHomesArea key={idx}>
                     <img
                       src={FeaturedHome}
-                      sx={{ width: "280px", height: "210px" }}
+                      style={{
+                        width: "280px",
+                        height: "210px",
+                      }}
+                      alt="feature home"
                     />
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={{ color: "#FFB020", marginRight: "5px" }}
+                    />
+                    <Typography variant="pa200" color="grey.A200">
+                      4.60(280)
+                    </Typography>
                     <Box>
                       <Typography variant="h5" color="grey.A300">
                         Luxury 3 Bedroom Apartment at Epicentrum
                       </Typography>
                       <Typography variant="pa400" color="grey.A200">
                         Entire house | Florida
+                      </Typography>
+                      <Typography variant="h5" color="primary.100">
+                        $ 350/ night
                       </Typography>
                     </Box>
                   </CardFeaturedHomesArea>
@@ -482,19 +512,19 @@ export default function Dashboard() {
           </WidgetRentalArea>
         </FeatureHomes>
 
+        <Typography variant="h3" color="grey.A300" sx={{ marginBottom: "8px" }}>
+          Testimonials & Gallery
+        </Typography>
+        <Testimonial />
         <TestimonialsContainer>
-          <Typography
-            variant="h3"
-            color="grey.A300"
-            sx={{ marginBottom: "8px" }}
-          >
-            Testimonials & Gallery
-          </Typography>
-        </TestimonialsContainer>
-
-        <Newsletter>
           <Box
             sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+              padding: "0 70px",
+              width: "100%",
               display: "flex",
               justifyContent: "space-between",
               justifyItems: "center",
@@ -519,54 +549,51 @@ export default function Dashboard() {
                   alignItems: "center",
                 }}
               >
-                <Box>
+                <Stack alignItems="center" flexDirection="row">
                   <FontAwesomeIcon
                     icon={faCheck}
                     style={{
                       color: "grey.A300",
+                      borderRadius: "50%",
+                      border: "1px solid #fff",
+                      padding: "5px",
                     }}
                   />
-                  <Typography
-                    variant="pa400"
-                    color="grey.A300"
-                    sx={{ mb: 2 }}
-                  >
+                  <Typography variant="pa400" color="grey.A300" sx={{ ml: 1 }}>
                     Best discounts ever
                   </Typography>
-                </Box>
-                <Box>
+                </Stack>
+                <Stack alignItems="center" flexDirection="row">
                   <FontAwesomeIcon
                     icon={faCheck}
                     style={{
                       color: "grey.A300",
+                      borderRadius: "50%",
+                      border: "1px solid #fff",
+                      padding: "5px",
                     }}
                   />
-                  <Typography
-                    variant="pa400"
-                    color="grey.A300"
-                    sx={{ mb: 2 }}
-                  >
+                  <Typography variant="pa400" color="grey.A300" sx={{ ml: 1 }}>
                     Free offers
                   </Typography>
-                </Box>
-                <Box>
+                </Stack>
+                <Stack alignItems="center" flexDirection="row">
                   <FontAwesomeIcon
                     icon={faCheck}
                     style={{
                       color: "grey.A300",
+                      borderRadius: "50%",
+                      border: "1px solid #fff",
+                      padding: "5px",
                     }}
                   />
-                  <Typography
-                    variant="pa400"
-                    color="grey.A300"
-                    sx={{ mb: 2 }}
-                  >
+                  <Typography variant="pa400" color="grey.A300" sx={{ ml: 1 }}>
                     Fast & secure payments
                   </Typography>
-                </Box>
+                </Stack>
               </Box>
             </Box>
-            
+
             <Button
               variant="contained"
               sx={{
@@ -578,7 +605,7 @@ export default function Dashboard() {
               Sign Up Now
             </Button>
           </Box>
-        </Newsletter>
+        </TestimonialsContainer>
       </Box>
     </DashboardContainer>
   );
