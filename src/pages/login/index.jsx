@@ -21,7 +21,10 @@ import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import validator from "validator";
 import { FaIcon } from "../../components";
-import { IS_VALID_EMAIL, IS_VALID_PHONE_NUMBER } from "../../config/errorMessage";
+import {
+  IS_VALID_EMAIL,
+  IS_VALID_PHONE_NUMBER,
+} from "../../config/errorMessage";
 import useAuth from "../../hooks/useAuth";
 
 function TabPanel(props) {
@@ -48,7 +51,9 @@ export default function Login() {
   const { login } = useAuth();
 
   const handleLogin = async () => {
-    await login(email, password);
+    const emailOrPhoneNumber = value === 0 ? email : phoneNumber;
+    
+    await login(emailOrPhoneNumber, password)
   };
 
   const handleEmailChange = (e) => {
@@ -125,6 +130,7 @@ export default function Login() {
         indicatorColor="primary"
         onChange={(event, newValue) => {
           setValue(newValue);
+          value === 0 ? setPhoneNumber("") : setEmail("");
         }}
         sx={{
           width: "100%",
