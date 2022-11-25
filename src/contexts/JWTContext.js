@@ -88,10 +88,10 @@ function AuthProvider({ children }) {
         initialize()
     }, [])
 
-    const login = async (email, password) => {
+    const login = async (emailOrPhoneNumber, password) => {
         try {
             const response = await axios.post(`${BE_SERVER}auth/login`, {
-                email,
+                emailOrPhoneNumber,
                 password,
             });
             const { access_token } = response.data;

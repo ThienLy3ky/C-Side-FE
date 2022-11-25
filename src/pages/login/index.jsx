@@ -51,7 +51,9 @@ export default function Login() {
   const { login } = useAuth();
 
   const handleLogin = async () => {
+    console.log("🚀 ~ file: index.jsx ~ line 49 ~ Login ~ value", value)
     const emailOrPhoneNumber = value === 0 ? email : phoneNumber;
+    console.log("🚀 ~ file: index.jsx ~ line 55 ~ handleLogin ~ emailOrPhoneNumber", emailOrPhoneNumber)
     
     await login(emailOrPhoneNumber, password)
   };
