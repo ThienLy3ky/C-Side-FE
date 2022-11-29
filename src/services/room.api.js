@@ -13,7 +13,7 @@ export const roomAPI = {
   getDetail: (room_id) => {
     return http.get(`rooms/${room_id}`);
   },
-  getRemove: (room_id) => {
+  Remove: (room_id) => {
     return http.delete(`rooms/${room_id}`);
   },
 };

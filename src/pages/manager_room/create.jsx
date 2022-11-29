@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { roomAPI } from "../../services/room.api";
+import SimpleSnackbar from "../../components/snackbars";
 const currencies = [
   {
     value: "available",
@@ -39,6 +40,8 @@ const style = {
 
 export default function CreateModal(props) {
   const [open, setOpen] = React.useState(false);
+  const [snackOpen, setsnackOpen] = React.useState(false);
+  const [masage, setmasage] = React.useState("");
   const [name, setname] = React.useState("");
   const [address, setaddress] = React.useState("");
   const [capacity, setcapacity] = React.useState(0);
@@ -56,25 +59,45 @@ export default function CreateModal(props) {
     setOpen(false);
   };
   const CreateRoom = async () => {
-    // const newRoom = await roomAPI.getAll({
-    //   name,
-    //   address,
-    //   capacity,
-    //   price,
-    //   status,
-    //   description,
-    //   image,
-    //   rating,
-    //   location: { lng, lat },
-    // });
-    const newRoom = await roomAPI.getAll(20, 0);
-    console.log(newRoom);
+    if (
+      name !== "" &&
+      address !== "" &&
+      lng &&
+      lat &&
+      status !== "" &&
+      image !== "" &&
+      rating
+    ) {
+      const newRoom = await roomAPI.create({
+        name,
+        address,
+        capacity,
+        price,
+        status,
+        description,
+        image,
+        rating,
+        location: { lng, lat },
+        is_active: true,
+      });
+      setsnackOpen(true);
+      if (newRoom ? true : false) {
+        setmasage(" Create success");
+        setOpen(!open);
+        window.location.reload(false);
+      } else {
+        setmasage("create fails");
+      }
+    } else {
+      setsnackOpen(true);
+      setmasage(" Check data again");
+    }
   };
   return (
     <div>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={props.onClose}
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"
       >
@@ -104,7 +127,7 @@ export default function CreateModal(props) {
             style={{ width: "100%", marginTop: "10px" }}
             label="capacity"
             onChange={(e) => {
-              setcapacity(e.target.value);
+              setcapacity(parseInt(e.target.value));
             }}
             variant="outlined"
           />
@@ -114,7 +137,7 @@ export default function CreateModal(props) {
             style={{ width: "100%", marginTop: "10px" }}
             label="price"
             onChange={(e) => {
-              setprice(e.target.value);
+              setprice(parseInt(e.target.value));
             }}
             variant="outlined"
           />
@@ -122,7 +145,7 @@ export default function CreateModal(props) {
             className="col-12"
             type="number"
             onChange={(e) => {
-              setlng(e.target.value);
+              setlng(parseInt(e.target.value));
             }}
             style={{ width: "50%", marginTop: "10px" }}
             label="Longtitude"
@@ -132,7 +155,7 @@ export default function CreateModal(props) {
             className="col-12"
             type="number"
             onChange={(e) => {
-              setlat(e.target.value);
+              setlat(parseInt(e.target.value));
             }}
             style={{ width: "50%", marginTop: "10px" }}
             label="Latitude"
@@ -160,7 +183,7 @@ export default function CreateModal(props) {
             className="col-12"
             type="number"
             onChange={(e) => {
-              setrating(e.target.value);
+              setrating(parseInt(e.target.value));
             }}
             style={{ width: "100%", marginTop: "10px" }}
             label="rating"
@@ -185,6 +208,7 @@ export default function CreateModal(props) {
           <Button onClick={CreateRoom}>Save</Button>
         </Box>
       </Modal>
+      <SimpleSnackbar open={snackOpen} text={masage} />
     </div>
   );
 }
