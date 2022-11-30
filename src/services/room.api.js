@@ -4,7 +4,7 @@ export const roomAPI = {
   create: (data) => {
     return http.post("rooms/create", data);
   },
-  edit: ({ room_id, data }) => {
+  edit: (room_id, data) => {
     return http.put(`rooms/${room_id}`, data);
   },
   getAll: (pageSize, pageNumber) => {

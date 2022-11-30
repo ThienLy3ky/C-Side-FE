@@ -68,7 +68,7 @@ export default function EditModal(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  const CreateRoom = async () => {
+  const EditRoom = async () => {
     if (
       name !== "" &&
       address !== "" &&
@@ -76,9 +76,10 @@ export default function EditModal(props) {
       lat &&
       status !== "" &&
       image !== "" &&
-      rating
+      rating &&
+      props?.data?.roomId
     ) {
-      const newRoom = await roomAPI.create({
+      const newRoom = await roomAPI.edit(props?.data?.roomId, {
         name,
         address,
         capacity,
@@ -225,7 +226,7 @@ export default function EditModal(props) {
               </MenuItem>
             ))}
           </TextField>
-          <Button onClick={CreateRoom}>Save</Button>
+          <Button onClick={EditRoom}>Save</Button>
         </Box>
       </Modal>
       <SimpleSnackbar open={snackOpen} text={masage} />
