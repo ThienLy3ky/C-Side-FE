@@ -13,6 +13,8 @@ export const http = axios.create({
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMUBnbWFpbC5jb20iLCJpYXQiOjE2NjkzNDMwMDIsImV4cCI6MTY3MTkzNTAwMn0.C4_sUQgsUb7eQtVTOqRPiavuJkPbv15c3L_HcrTJW3c",
   },
 });
 
@@ -25,7 +27,7 @@ http.interceptors.request.use(
       return config;
     }
     if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
+      // config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
     return config;
   },
@@ -51,8 +53,8 @@ http.interceptors.response.use(
       refreshToken = refreshToken
         ? refreshToken
         : authAPI.refreshToken().finally(() => {
-          refreshToken = null;
-        });
+            refreshToken = null;
+          });
       return refreshToken
         .then((access_token) => {
           error.response.config.Authorization = access_token;
