@@ -6,6 +6,9 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { roomAPI } from "../../services/room.api";
 import SimpleSnackbar from "../../components/snackbars";
+import mapboxgl from "mapbox-gl";
+mapboxgl.accessToken =
+  "pk.eyJ1IjoiY3NpZGUiLCJhIjoiY2xhYTBrMXIwMDF4bzNwcDExMDdmNG10ZCJ9.dJ8utYc12qEivXTKawbZxg";
 const currencies = [
   {
     value: "available",
@@ -46,25 +49,37 @@ export default function EditModal(props) {
   const [address, setaddress] = React.useState("");
   const [capacity, setcapacity] = React.useState(0);
   const [price, setprice] = React.useState(0);
-  const [lng, setlng] = React.useState(0);
-  const [lat, setlat] = React.useState(0);
+  const [lng, setlng] = React.useState(-70.9);
+  const [lat, setlat] = React.useState(42.35);
   const [status, setstatus] = React.useState("false");
   const [description, setdescription] = React.useState("");
   const [image, setimage] = React.useState("");
   const [rating, setrating] = React.useState(0);
+  const mapContainer = React.useRef(null);
+  const map = React.useRef(null);
+  const [zoom, setZoom] = React.useState(9);
   React.useEffect(() => {
     setOpen(props.show);
     setname(props?.data?.name);
     setaddress(props?.data?.address);
     setcapacity(props?.data?.capacity);
     setprice(props?.data?.price);
-    setlng(props.data?.location?.y);
-    setlat(props?.data?.location?.x);
+    if (props.data?.location) {
+      setlng(parseInt(props.data?.location?.y));
+      setlat(parseInt(props?.data?.location?.x));
+    }
     setstatus(props?.data?.status);
     setdescription(props?.data?.description);
     setimage(props?.data?.image);
     setrating(props?.data?.rating);
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [lng, lat],
+      zoom: zoom,
+    });
   }, [props, props?.data]);
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -226,9 +241,18 @@ export default function EditModal(props) {
               </MenuItem>
             ))}
           </TextField>
+
           <Button onClick={EditRoom}>Save</Button>
         </Box>
       </Modal>
+      <div
+        style={
+          open
+            ? { display: "none", height: "400px", width: "400px" }
+            : { height: "400px", width: "400px" }
+        }
+        ref={mapContainer}
+      />
       <SimpleSnackbar open={snackOpen} text={masage} />
     </div>
   );

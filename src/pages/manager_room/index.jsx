@@ -19,7 +19,7 @@ export default function ManagerRoom() {
   };
   const getRoom = async (e) => {
     const room = await roomAPI.getDetail(e.target.id);
-    setRoom(room.data);
+    setRoom(room?.data?.response);
     setModelEditRoom(!modelEditRoom);
   };
   return (
@@ -34,7 +34,7 @@ export default function ManagerRoom() {
       </Button>
       <Button>Deleted room</Button>
       <h4>Total:{rooms.count}</h4>
-      <ListRoom data={rooms.data} editRoom={getRoom} />
+      <ListRoom data={rooms?.response?.data} editRoom={getRoom} />
       <CreateModal
         show={modelCreateRoom}
         onClose={() => {
